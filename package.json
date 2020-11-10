@@ -1,0 +1,14 @@
+{
+  "name": "coding-assignment-daofab",
+  "version": "1.0.0",
+  "description": "A coding assignment which consists of two accompanying JSON files containing JSON data to be displayed in tabular form",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Nwabuokei Nnamdi",
+  "license": "ISC",
+  "dependencies": {
+    "json-server": "^0.16.2"
+  }
+}
