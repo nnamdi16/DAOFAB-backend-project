@@ -9,6 +9,7 @@
   "author": "Nwabuokei Nnamdi",
   "license": "ISC",
   "dependencies": {
+    "axios": "^0.21.0",
     "json-server": "^0.16.2"
   }
 }
