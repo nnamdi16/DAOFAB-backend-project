@@ -1,11 +1,21 @@
 const {fetchParentTransaction, paginate, fetchChildTransaction} = require('./transaction.service')
 
+exports.fetchParentTransaction = async(req,res) => {
+    try {
+         fetchParentTransaction().then(data =>{
+            console.log(data.data);
+            return res.json({
+                data
+            })      
+    });
+  
+    } catch (error) {
+        
+    }
+}
 exports.fetchTransaction = async(req,res) => {
     try {
         const [parentTransaction,childTransaction] = await Promise.all([fetchParentTransaction(), fetchChildTransaction()]);
-        // console.log(parentTransaction,childTransaction);
-        // const result =  fetchParentTransaction().then(data =>{
-        //     console.log(data.data);
             const PAGE_SIZE =  parentTransaction.data.length;
             console.log(PAGE_SIZE);
             const page = parseInt(req.query.page);
