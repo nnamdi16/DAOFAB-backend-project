@@ -76,5 +76,4 @@ return {
 
 }
 
-console.log(this.paginate(7,1));
 
