@@ -5,10 +5,22 @@ exports.fetchParentTransaction = async(req,res) => {
     const data = await fetchParentTransaction();
     const {data:response} = data;
     return res.json({
-                data
-            })      
-    });
+        response
+    })
   
+    } catch (error) {
+        
+    }
+}
+
+exports.fetchChildTransactionByParentId= async(req, res) => {
+    try {
+        const parentId = parseInt(req.query.id);
+        const childTransaction = await fetchChildTransaction();
+        const response = childTransaction.data.filter((transaction) => transaction.parentId === parentId);
+        return res.json({
+                data:response
+        })
     } catch (error) {
         
     }
