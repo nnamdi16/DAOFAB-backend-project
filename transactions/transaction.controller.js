@@ -2,9 +2,9 @@ const {fetchParentTransaction, paginate, fetchChildTransaction} = require('./tra
 
 exports.fetchParentTransaction = async(req,res) => {
     try {
-         fetchParentTransaction().then(data =>{
-            console.log(data.data);
-            return res.json({
+    const data = await fetchParentTransaction();
+    const {data:response} = data;
+    return res.json({
                 data
             })      
     });
