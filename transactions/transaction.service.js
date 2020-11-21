@@ -76,4 +76,13 @@ return {
 
 }
 
+function filterChildTransactionByParentId (transaction) {
+         transaction.sender = this.sender;
+            transaction.receiver = this.receiver;
+            transaction.totalAmount = this.totalAmount;
+            return transaction.parentId === this.parentId
+}
+
+module.exports.filterChildTransactionByParentId= filterChildTransactionByParentId;
+
 
