@@ -1,4 +1,4 @@
-const {fetchParentTransaction, paginate, fetchChildTransaction} = require('./transaction.service')
+const {fetchParentTransaction, paginate, fetchChildTransaction,filterChildTransactionByParentId} = require('./transaction.service')
 
 exports.fetchParentTransaction = async(req,res) => {
     try {
@@ -29,17 +29,26 @@ exports.fetchParentTransaction = async(req,res) => {
 exports.fetchChildTransactionByParentId= async(req, res) => {
     try {
         const parentId = parseInt(req.query.id);
-        const childTransaction = await fetchChildTransaction();
+        const [parentTransaction,childTransaction] = await Promise.all([fetchParentTransaction(), fetchChildTransaction()]);
         const isEmpty = Object.keys(childTransaction).length === 0
         if (childTransaction == undefined || isEmpty) {
             return res.status(404).json({
                 message:'Child transaction does not exist'
             });
         }
-        const response = childTransaction.data.filter((transaction) => transaction.parentId === parentId);
+        if (parentTransaction == undefined || isEmpty) {
+            return res.status(404).json({
+                message:'Parent transaction does not exist'
+            });
+        }
+        const parentResponse = parentTransaction.data.filter((transaction) => transaction.id === parentId);
+        const {sender, receiver,totalAmount} = parentResponse[0];
+        const parentDetail = {sender,receiver,parentId,totalAmount}
+        const response = childTransaction.data.filter(filterChildTransactionByParentId,parentDetail);
+        
         return res.status(200).json({
                 message:'SUCCESS',
-                data:response
+                data:response,
         })
     } catch (error) {
         res.status(500).json(
