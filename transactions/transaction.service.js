@@ -1,16 +1,30 @@
 const { default: axios } = require('axios');
 
+/**
+ * fetchParentTransaction: fetches all parents transaction from Parent.json
+ */
 exports.fetchParentTransaction = async () => {
    const response =  await axios.get('http://localhost:3000/parentRoute');
    return response.data;
    
 }
 
+/**
+ * fetchChildTransaction: fetches all child transactions from Child.json
+ */
 exports.fetchChildTransaction = async () => {
     const response = await axios.get('http://localhost:3000/childRoute');
     return response.data;
 }
 
+/**
+ * paginate:determines the how the backend displays the data based on the totalItems, currentPage, pageSize and the maxPages.
+ * 
+ * @param {number} totalItems Total number of items that is fetched from the json file
+ * @param {number} currentPage Current page number 
+ * @param {number} pageSize The number of items to be displayed per page
+ * @param {number} maxPages Maximum number of items to be displayed per page.
+ */
 exports.paginate = (
     totalItems,
     currentPage =1,
@@ -75,7 +89,10 @@ return {
 };
 
 }
-
+/**
+ * filterChildTransactionByParentId method filters child transaction based on the parentId.
+ * @param {{sender:string, totalAmount:number, receiver: string,parentId:number}} transaction 
+ */
 function filterChildTransactionByParentId (transaction) {
          transaction.sender = this.sender;
             transaction.receiver = this.receiver;

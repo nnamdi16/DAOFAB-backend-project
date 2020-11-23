@@ -1,5 +1,8 @@
 const {fetchParentTransaction, paginate, fetchChildTransaction,filterChildTransactionByParentId} = require('./transaction.service')
 
+/**
+ * fetchParentTransaction controller fetches all parent transactions
+ */
 exports.fetchParentTransaction = async(req,res) => {
     try {
     const data = await fetchParentTransaction();
@@ -26,6 +29,9 @@ exports.fetchParentTransaction = async(req,res) => {
     }
 }
 
+/**
+ * fetchChildTransactionByParentId controller fetches all child transactions based on the parentId
+ */
 exports.fetchChildTransactionByParentId= async(req, res) => {
     try {
         const parentId = parseInt(req.query.id);
@@ -41,9 +47,12 @@ exports.fetchChildTransactionByParentId= async(req, res) => {
                 message:'Parent transaction does not exist'
             });
         }
+        //filter parentTransaction based when the parent transaction id is equal to parentId
         const parentResponse = parentTransaction.data.filter((transaction) => transaction.id === parentId);
         const {sender, receiver,totalAmount} = parentResponse[0];
         const parentDetail = {sender,receiver,parentId,totalAmount}
+
+        //filter childTransaction based when the parent transaction id is equal to parentId
         const response = childTransaction.data.filter(filterChildTransactionByParentId,parentDetail);
         
         return res.status(200).json({
@@ -62,6 +71,9 @@ exports.fetchChildTransactionByParentId= async(req, res) => {
 
 }
 
+/**
+ * fetchTransaction controller fetches all parent transactions and renders the output based on server side pagination
+ */
 exports.fetchTransaction = async(req,res) => {
     try {
         const [parentTransaction,childTransaction] = await Promise.all([fetchParentTransaction(), fetchChildTransaction()]);
